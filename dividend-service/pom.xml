@@ -8,13 +8,14 @@
 		<version>2.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.stock</groupId>
-	<artifactId>stock-service</artifactId>
+	<groupId>com.example.dividend-service</groupId>
+	<artifactId>dividend-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>stock-service</name>
+	<name>dividend-service</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-cloud.version>2020.0.1</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -67,12 +68,31 @@
 			<version>2.1.2</version>
 		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

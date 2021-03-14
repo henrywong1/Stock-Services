@@ -1,21 +1,20 @@
-package com.stock.stockservice;
-
-import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+package com.example.dividendservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
-@EnableEncryptableProperties
+@EnableConfigurationProperties
 @PropertySources({ @PropertySource("classpath:application.properties"), @PropertySource("classpath:env.properties") })
-@SpringBootApplication
 @EnableEurekaClient
-public class StockServiceApplication {
+@SpringBootApplication
+public class DividendServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StockServiceApplication.class, args);
+		SpringApplication.run(DividendServiceApplication.class, args);
 	}
 
 }
