@@ -1,39 +1,19 @@
-package com.stock.stockservice.Entity;
+package com.newsservice.newsservice.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 public class Stock {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String symbol;
-
     private String name;
-
     private String img_url;
-
     private Double high52W;
-
     private Double low52W;
-
+    private String sector;
     private Double last_price;
-
     private String mkt_cap;
-
     private Double pe;
 
     public Long getId() {
         return id;
-    }
-
-    public String getSymbol() {
-        return symbol;
     }
 
     public Double getPe() {
@@ -58,6 +38,14 @@ public class Stock {
 
     public void setLast_price(Double last_price) {
         this.last_price = last_price;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
     }
 
     public Double getLow52W() {
@@ -92,8 +80,15 @@ public class Stock {
         this.name = name;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

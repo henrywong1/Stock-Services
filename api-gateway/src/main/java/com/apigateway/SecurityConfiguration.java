@@ -11,6 +11,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+// Following Configuration tutorial: https://developer.okta.com/blog/2019/08/28/reactive-microservices-spring-cloud-gateway
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 public class SecurityConfiguration {

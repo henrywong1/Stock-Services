@@ -24,15 +24,9 @@ public class StockController {
         return repository.findAll();
     }
 
-    @GetMapping("/stocks/test")
-    public String test() {
-        return "It works?";
-    }
-
     @GetMapping("/stocks/{symbol}")
     @ResponseBody
     public Stock getStockBySymbol(@PathVariable String symbol) {
-        System.out.println("Symbol: " + symbol);
         return repository.searchBySymbol(symbol);
     }
 
@@ -43,4 +37,5 @@ public class StockController {
         return "Saved";
 
     }
+
 }

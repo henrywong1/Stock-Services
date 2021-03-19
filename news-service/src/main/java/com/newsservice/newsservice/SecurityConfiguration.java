@@ -1,4 +1,4 @@
-package com.example.dividendservice;
+package com.newsservice.newsservice;
 
 import com.okta.spring.boot.oauth.Okta;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

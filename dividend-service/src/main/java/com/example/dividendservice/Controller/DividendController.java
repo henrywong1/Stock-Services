@@ -1,16 +1,22 @@
 package com.example.dividendservice.Controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.example.dividendservice.Entity.Dividend;
+import com.example.dividendservice.Entity.Stock;
 import com.example.dividendservice.Repository.DividendRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
 public class DividendController {
@@ -18,22 +24,26 @@ public class DividendController {
     @Autowired
     DividendRepository repository;
 
+    @Autowired
+    WebClient.Builder webClientBuilder;
+
     @GetMapping("/dividends")
-    public String test() {
-        return "Dividend Service";
+    public List<Dividend> test() {
+        return repository.findAll();
     }
 
     @GetMapping("/dividends/{symbol}")
     @ResponseBody
-    public String getBySymbol(@PathVariable("symbol") String symbol) {
+    public List<Dividend> getDividendBySymbol(@PathVariable("symbol") String symbol) {
         // Feign client use Stock service get stock by ID, then get id.
-        return "GETTING DIVIDEND DATA FOR" + symbol;
+        Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol).retrieve()
+                .bodyToMono(Stock.class).block();
+        return repository.getDividendByStockId(stock.getId());
     }
 
-    @PostMapping("/dividends")
-    @PreAuthorize("hasAuthority('admins')")
-    public Dividend saveDividend(@RequestBody Dividend newDividend) {
-        return repository.save(newDividend);
+    @PostMapping("/dividends/add")
+    // @PreAuthorize("hasAuthority('admins')")
+    public Dividend saveDividend(@RequestBody Dividend dividend) {
+        return repository.save(dividend);
     }
-
 }
