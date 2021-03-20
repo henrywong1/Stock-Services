@@ -18,17 +18,17 @@ public class Company {
     private String industry;
     private String ceo;
     private String sector;
-    private Double employees;
+    private int employees;
 
     public Long getStockId() {
         return stockId;
     }
 
-    public Double getEmployees() {
+    public int getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Double employees) {
+    public void setEmployees(int employees) {
         this.employees = employees;
     }
 

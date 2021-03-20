@@ -1,4 +1,4 @@
-package com.newsservice.newsservice.Entity;
+package com.Stocks.companyservice.Entity;
 
 public class Stock {
     private Long id;
@@ -6,5 +6,4 @@ public class Stock {
     public Long getId() {
         return id;
     }
-
 }

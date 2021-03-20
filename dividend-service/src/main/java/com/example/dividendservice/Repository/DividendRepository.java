@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface DividendRepository extends JpaRepository<Dividend, Long> {
 
-    @Query(value = "SELECT s FROM Dividend s WHERE s.stockId = ?1")
+    @Query(value = "SELECT s FROM Dividend s WHERE s.stockid = ?1")
     public List<Dividend> getDividendByStockId(Long stockId);
 }

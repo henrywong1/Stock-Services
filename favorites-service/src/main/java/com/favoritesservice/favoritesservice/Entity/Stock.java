@@ -1,4 +1,4 @@
-package com.newsservice.newsservice.Entity;
+package com.favoritesservice.favoritesservice.Entity;
 
 public class Stock {
     private Long id;

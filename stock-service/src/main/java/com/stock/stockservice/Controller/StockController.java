@@ -6,6 +6,7 @@ import com.stock.stockservice.Entity.Stock;
 import com.stock.stockservice.Repository.StockRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class StockController {
     }
 
     @PostMapping("/stocks/add")
-    // @PreAuthorize("hasAuthority('admins')")
+    @PreAuthorize("hasAuthority('admins')")
     public String saveStock(@RequestBody Stock newStock) {
         repository.save(newStock);
         return "Saved";

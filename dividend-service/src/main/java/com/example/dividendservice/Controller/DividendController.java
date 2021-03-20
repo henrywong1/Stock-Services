@@ -1,6 +1,5 @@
 package com.example.dividendservice.Controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.example.dividendservice.Entity.Dividend;
@@ -9,7 +8,6 @@ import com.example.dividendservice.Repository.DividendRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +25,11 @@ public class DividendController {
     @Autowired
     WebClient.Builder webClientBuilder;
 
+    @GetMapping("/")
+    public String home() {
+        return "Dividend service";
+    }
+
     @GetMapping("/dividends")
     public List<Dividend> test() {
         return repository.findAll();
@@ -34,15 +37,14 @@ public class DividendController {
 
     @GetMapping("/dividends/{symbol}")
     @ResponseBody
-    public List<Dividend> getDividendBySymbol(@PathVariable("symbol") String symbol) {
-        // Feign client use Stock service get stock by ID, then get id.
+    public List<Dividend> getDividendBySymbol(@PathVariable String symbol) {
         Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol).retrieve()
                 .bodyToMono(Stock.class).block();
         return repository.getDividendByStockId(stock.getId());
     }
 
     @PostMapping("/dividends/add")
-    // @PreAuthorize("hasAuthority('admins')")
+    @PreAuthorize("hasAuthority('admins')")
     public Dividend saveDividend(@RequestBody Dividend dividend) {
         return repository.save(dividend);
     }

@@ -29,7 +29,4 @@ public class NewsServiceApplication {
 		return WebClient.builder();
 	}
 
-	// Autowire webclient, and use it for api calls to the lb:// urls, provided by
-	// gateway
-
 }

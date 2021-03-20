@@ -8,14 +8,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    // http.authorizeRequests().anyRequest().authenticated().and().oauth2ResourceServer().jwt();
-    // Okta.configureResourceServer401ResponseBody(http);
-    // }
-
     @Override
-    protected void configure(HttpSecurity security) throws Exception {
-        security.httpBasic().and().cors().and().csrf().disable();
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().anyRequest().authenticated().and().oauth2ResourceServer().jwt();
+        Okta.configureResourceServer401ResponseBody(http);
     }
+
+    // Disable security
+    // @Override
+    // protected void configure(HttpSecurity security) throws Exception {
+    // security.httpBasic().and().cors().and().csrf().disable();
+    // }
 }
