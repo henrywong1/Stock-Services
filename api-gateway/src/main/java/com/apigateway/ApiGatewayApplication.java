@@ -32,20 +32,35 @@ public class ApiGatewayApplication {
 	@Bean
 	public RouteLocator myRoutes(RouteLocatorBuilder builder) {
 		return builder.routes().route("stock-service",
-				r -> r.path("/stocks/**").filters(f -> f.filter(filterFactory.apply())).uri("lb://stock-service"))
+				r -> r.path("/stocks/**")
+						.filters(f -> f.filter(filterFactory.apply())
+								.hystrix(c -> c.setName("stocks-fb").setFallbackUri("forward:/stocks-fallback")))
+						.uri("lb://stock-service"))
 				.route(("dividend-service"),
-						r -> r.path("/dividends/**").filters(f -> f.filter(filterFactory.apply()))
+						r -> r.path("/dividends/**")
+								.filters(f -> f.filter(filterFactory.apply()).hystrix(
+										c -> c.setName("dividend-fb").setFallbackUri("forward:/dividend-fallback")))
 								.uri("lb://dividend-service/"))
 				.route(("favorites-service"),
-						r -> r.path("/favorites/**").filters(f -> f.filter(filterFactory.apply()))
+						r -> r.path("/favorites/**")
+								.filters(f -> f.filter(filterFactory.apply()).hystrix(
+										c -> c.setName("favorites-fb").setFallbackUri("forward:/favorites-fallback")))
 								.uri("lb://favorites-service"))
 				.route(("news-service"),
-						r -> r.path("/news/**").filters(f -> f.filter(filterFactory.apply())).uri("lb://news-service"))
+						r -> r.path("/news/**")
+								.filters(f -> f.filter(filterFactory.apply())
+										.hystrix(c -> c.setName("news-fb").setFallbackUri("forward:/news-fallback")))
+								.uri("lb://news-service"))
 				.route(("historical-service"),
-						r -> r.path("/historical/**").filters(f -> f.filter(filterFactory.apply()))
+						r -> r.path("/historical/**")
+								.filters(f -> f.filter(filterFactory.apply()).hystrix(
+										c -> c.setName("historical-fb").setFallbackUri("forward:/historical-fallback")))
 								.uri("lb://historical-service"))
-				.route(("company-service"), r -> r.path("/company/**").filters(f -> f.filter(filterFactory.apply()))
-						.uri("lb://company-service"))
+				.route(("company-service"),
+						r -> r.path("/company/**")
+								.filters(f -> f.filter(filterFactory.apply()).hystrix(
+										c -> c.setName("company-fb").setFallbackUri("forward:/company-fallback")))
+								.uri("lb://company-service"))
 				.build();
 	}
 

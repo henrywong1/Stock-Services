@@ -26,4 +26,36 @@ public class GatewayController {
         return "Authenticated, Welcome : " + oidcUser.getPreferredUsername();
     }
 
+    // FALLBACK
+
+    @GetMapping("/stocks-fallback")
+    public String stockFallBack() {
+        return "Stock service unavailable";
+    }
+
+    @GetMapping("/dividend-fallback")
+    public String dividendFallBack() {
+        return "Dividend service unavailable";
+    }
+
+    @GetMapping("/favorites-fallback")
+    public String favoritesFallBack() {
+        return "Favorites service unavailable";
+    }
+
+    @GetMapping("/news-fallback")
+    public String newsFallBack() {
+        return "News service unavailable";
+    }
+
+    @GetMapping("/historical-fallback")
+    public String historicalFallBack() {
+        return "Historical service unavailable";
+    }
+
+    @GetMapping("/company-fallback")
+    public String companyFallBack() {
+        return "Company service unavailable";
+    }
+
 }
