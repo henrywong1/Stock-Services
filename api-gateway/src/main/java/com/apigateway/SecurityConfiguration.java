@@ -18,17 +18,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        // @formatter:off
-        http
-            .authorizeExchange()
-                .anyExchange().authenticated()
-                .and()
-            .oauth2Login()
-                .and()
-            .oauth2ResourceServer()
-                .jwt();
+        http.csrf().disable().authorizeExchange().anyExchange().authenticated().and().oauth2Login().and()
+                .oauth2ResourceServer().jwt();
         return http.build();
-        // @formatter:on
     }
 
     @Bean

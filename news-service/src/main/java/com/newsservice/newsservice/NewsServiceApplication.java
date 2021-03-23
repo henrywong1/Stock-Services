@@ -28,5 +28,4 @@ public class NewsServiceApplication {
 	WebClient.Builder loadBalancedWebClientBuilder() {
 		return WebClient.builder();
 	}
-
 }

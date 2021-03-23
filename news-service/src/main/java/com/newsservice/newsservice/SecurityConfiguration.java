@@ -14,7 +14,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         Okta.configureResourceServer401ResponseBody(http);
     }
 
-    // Disables security
     // @Override
     // protected void configure(HttpSecurity security) throws Exception {
     // security.httpBasic().and().cors().and().csrf().disable();

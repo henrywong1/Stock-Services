@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.Query;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query(value = "SELECT s FROM Company s WHERE s.stockId = ?1")
-    public List<Company> getCompanyByStockId(Long id);
+    public Company getCompanyByStockId(Long id);
 }

@@ -8,6 +8,8 @@ import com.historicalservice.historicalservice.Repository.HistoricalRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,15 +26,15 @@ public class HistoricalController {
     @Autowired
     HistoricalRepository repository;
 
-    @GetMapping("/")
+    @GetMapping("/historical")
     public String home() {
         return "Historical Service";
     }
 
     @GetMapping("/historical/{symbol}")
-    public List<Historical> getHistoricalData(@PathVariable String symbol) {
-        Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol).retrieve()
-                .bodyToMono(Stock.class).block();
+    public List<Historical> getHistoricalData(@PathVariable String symbol, @AuthenticationPrincipal Jwt jwt) {
+        Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol)
+                .header("Authorization", "Bearer " + jwt.getTokenValue()).retrieve().bodyToMono(Stock.class).block();
         return repository.getHistoricalDataByStockId(stock.getId()); //
     }
 

@@ -10,6 +10,8 @@ import org.springframework.cloud.security.oauth2.gateway.TokenRelayGatewayFilter
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 
@@ -29,19 +31,28 @@ public class ApiGatewayApplication {
 	// Defining routes with loadbalance uris
 	@Bean
 	public RouteLocator myRoutes(RouteLocatorBuilder builder) {
-		return builder.routes()
-				.route("stock-service",
-						r -> r.path("/stocks", "/stocks/{symbol}").filters(f -> f.filter(filterFactory.apply()))
-								.uri("lb://stock-service"))
+		return builder.routes().route("stock-service",
+				r -> r.path("/stocks/**").filters(f -> f.filter(filterFactory.apply())).uri("lb://stock-service"))
 				.route(("dividend-service"),
-						r -> r.path("/dividends", "/dividends/{symbol}").filters(f -> f.filter(filterFactory.apply()))
+						r -> r.path("/dividends/**").filters(f -> f.filter(filterFactory.apply()))
 								.uri("lb://dividend-service/"))
 				.route(("favorites-service"),
-						r -> r.path("/favorites", "/favorites/add/{symbol}")
-								.filters(f -> f.filter(filterFactory.apply())).uri("lb://favorites-service"))
-				.route(("news-service"), r -> r.path("/news", "/news/{symbol}", "/news/add")
-						.filters(f -> f.filter(filterFactory.apply())).uri("lb://news-service"))
+						r -> r.path("/favorites/**").filters(f -> f.filter(filterFactory.apply()))
+								.uri("lb://favorites-service"))
+				.route(("news-service"),
+						r -> r.path("/news/**").filters(f -> f.filter(filterFactory.apply())).uri("lb://news-service"))
+				.route(("historical-service"),
+						r -> r.path("/historical/**").filters(f -> f.filter(filterFactory.apply()))
+								.uri("lb://historical-service"))
+				.route(("company-service"), r -> r.path("/company/**").filters(f -> f.filter(filterFactory.apply()))
+						.uri("lb://company-service"))
 				.build();
+	}
+
+	@Bean
+	@LoadBalanced
+	WebClient.Builder loadBalancedWebClientBuilder() {
+		return WebClient.builder();
 	}
 
 }

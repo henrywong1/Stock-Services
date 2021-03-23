@@ -8,6 +8,8 @@ import com.Stocks.companyservice.Repository.CompanyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,21 +26,16 @@ public class CompanyController {
     @Autowired
     WebClient.Builder webClientBuilder;
 
-    @GetMapping("/")
+    @GetMapping("/company")
     public String Home() {
         return "Company Service";
     }
 
-    @GetMapping("/company")
-    public List<Company> getAllCompanies() {
-        return repository.findAll();
-    }
-
     @GetMapping("/company/{symbol}")
-    public List<Company> getCompanyByStockSymbol(@PathVariable String symbol) {
+    public Company getCompanyByStockSymbol(@PathVariable String symbol, @AuthenticationPrincipal Jwt jwt) {
 
-        Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol).retrieve()
-                .bodyToMono(Stock.class).block();
+        Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol)
+                .header("Authorization", "Bearer " + jwt.getTokenValue()).retrieve().bodyToMono(Stock.class).block();
 
         return repository.getCompanyByStockId(stock.getId());
 
