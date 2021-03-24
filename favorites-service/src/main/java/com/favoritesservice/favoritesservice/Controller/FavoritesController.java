@@ -9,6 +9,8 @@ import com.favoritesservice.favoritesservice.Entity.Stock;
 import com.favoritesservice.favoritesservice.Repository.FavoriteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +38,10 @@ public class FavoritesController {
     }
 
     @PostMapping("/favorites/{symbol}")
-    public Favorite addFavoriteStock(@PathVariable String symbol, Principal principal) {
-        Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol).retrieve()
-                .bodyToMono(Stock.class).block();
+    public Favorite addFavoriteStock(@PathVariable String symbol, Principal principal,
+            @AuthenticationPrincipal Jwt jwt) {
+        Stock stock = webClientBuilder.build().get().uri("lb://stock-service/stocks/" + symbol)
+                .header("Authentication", "Bearer " + jwt.getTokenValue()).retrieve().bodyToMono(Stock.class).block();
         Favorite favorite = new Favorite();
         favorite.setStockId(stock.getId());
         favorite.setUserId(principal.getName());
