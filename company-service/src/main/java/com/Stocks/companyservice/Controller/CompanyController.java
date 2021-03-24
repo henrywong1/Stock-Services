@@ -1,12 +1,11 @@
 package com.Stocks.companyservice.Controller;
 
-import java.util.List;
-
 import com.Stocks.companyservice.Entity.Company;
 import com.Stocks.companyservice.Entity.Stock;
 import com.Stocks.companyservice.Repository.CompanyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -21,6 +20,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class CompanyController {
 
     @Autowired
+    Environment environment;
+
+    @Autowired
     CompanyRepository repository;
 
     @Autowired
@@ -28,7 +30,7 @@ public class CompanyController {
 
     @GetMapping("/company")
     public String Home() {
-        return "Company Service";
+        return "Company Service on " + environment.getProperty("local.server.port");
     }
 
     @GetMapping("/company/{symbol}")

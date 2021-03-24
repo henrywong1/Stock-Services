@@ -6,6 +6,7 @@ import com.stock.stockservice.Entity.Stock;
 import com.stock.stockservice.Repository.StockRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class StockController {
 
     @Autowired
+    Environment environment;
+
+    @Autowired
     private StockRepository repository;
 
     @GetMapping("/stocks")
     public List<Stock> getAllStocks() {
         return repository.findAll();
+    }
+
+    @GetMapping("/stocks/lb")
+    public String test() {
+        return "Stock service running on " + environment.getProperty("local.server.port");
     }
 
     @GetMapping("/stocks/{symbol}")
@@ -33,14 +42,14 @@ public class StockController {
     }
 
     @PostMapping("/stocks")
-    @PreAuthorize("hasRole('admins')")
+    @PreAuthorize("hasAuthority('admins')")
     public String saveStock(@RequestBody Stock newStock) {
         repository.save(newStock);
         return "Saved";
     }
 
     @DeleteMapping("/stocks/{id}")
-    @PreAuthorize("hasRole('admins')")
+    @PreAuthorize("hasAuthority('admins')")
     public String deleteStock(@PathVariable Long id) {
         Stock stockToBeDeleted = repository.getOne(id);
         repository.delete(stockToBeDeleted);
@@ -48,7 +57,7 @@ public class StockController {
     }
 
     @GetMapping("/stocks/exclusive")
-    @PreAuthorize("hasRole('admins')")
+    @PreAuthorize("hasAuthority('admins')")
     public String exclusiveFunction() {
         return "Only Admins are allowed here";
     }

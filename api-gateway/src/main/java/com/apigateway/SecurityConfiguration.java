@@ -1,7 +1,7 @@
 package com.apigateway;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -13,7 +13,7 @@ import java.util.List;
 
 // Following Configuration tutorial: https://developer.okta.com/blog/2019/08/28/reactive-microservices-spring-cloud-gateway
 @EnableWebFluxSecurity
-@EnableReactiveMethodSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
     @Bean

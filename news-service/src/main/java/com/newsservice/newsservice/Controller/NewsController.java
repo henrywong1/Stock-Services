@@ -7,6 +7,7 @@ import com.newsservice.newsservice.Entity.Stock;
 import com.newsservice.newsservice.Repository.NewsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ public class NewsController {
     }
 
     @PostMapping("/news/add")
+    @PreAuthorize("hasAuthority('admins')")
     public News addNews(@RequestBody News news) {
         return repository.save(news);
     }
